@@ -101,11 +101,11 @@ spec:
         - name: podman-sidecar
           image: ${PODMAN_SIDECAR_IMAGE}
           command:
-            - podman
-            - system
-            - service
-            - --time=0
-            - unix:///podman-sock/docker.sock
+            - sh
+            - -c
+            - |
+              echo "Starting podman service..."
+              podman system service --time=0 unix:///podman-sock/docker.sock --log-level=debug
           securityContext:
             privileged: true
             runAsUser: 0
@@ -132,6 +132,17 @@ spec:
           env:
             - name: DOCKER_HOST
               value: "unix:///podman-sock/docker.sock"
+          command:
+            - sh
+            - -c
+            - |
+              echo "Waiting for podman socket..."
+              until [ -S /podman-sock/docker.sock ]; do
+                sleep 1
+              done
+
+              echo "Podman socket is ready, starting Wolf..."
+              exec /entrypoint.sh
           ports:
             - containerPort: 47984
               protocol: TCP
