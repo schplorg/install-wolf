@@ -1,0 +1,77 @@
+services:
+
+  wolf1:
+    image: ghcr.io/games-on-whales/wolf:stable
+    container_name: wolf1
+    privileged: true
+    restart: unless-stopped
+
+    environment:
+      - DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
+
+    ports:
+      - "48001:48010"
+      - "47989:47989"
+
+    volumes:
+      - ./wolf1:/etc/wolf
+      - /dev/dri:/dev/dri
+      - /dev/uinput:/dev/uinput
+      - /dev/uhid:/dev/uhid
+
+  wolf2:
+    image: ghcr.io/games-on-whales/wolf:stable
+    container_name: wolf2
+    privileged: true
+    restart: unless-stopped
+
+    environment:
+      - DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
+
+    ports:
+      - "48011:48010"
+      - "47990:47989"
+
+    volumes:
+      - ./wolf2:/etc/wolf
+      - /dev/dri:/dev/dri
+      - /dev/uinput:/dev/uinput
+      - /dev/uhid:/dev/uhid
+
+  wolf3:
+    image: ghcr.io/games-on-whales/wolf:stable
+    container_name: wolf3
+    privileged: true
+    restart: unless-stopped
+
+    environment:
+      - DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
+
+    ports:
+      - "48021:48010"
+      - "47991:47989"
+
+    volumes:
+      - ./wolf3:/etc/wolf
+      - /dev/dri:/dev/dri
+      - /dev/uinput:/dev/uinput
+      - /dev/uhid:/dev/uhid
+
+  wolf4:
+    image: ghcr.io/games-on-whales/wolf:stable
+    container_name: wolf4
+    privileged: true
+    restart: unless-stopped
+
+    environment:
+      - DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
+
+    ports:
+      - "48031:48010"
+      - "47992:47989"
+
+    volumes:
+      - ./wolf4:/etc/wolf
+      - /dev/dri:/dev/dri
+      - /dev/uinput:/dev/uinput
+      - /dev/uhid:/dev/uhid
