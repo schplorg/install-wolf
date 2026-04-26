@@ -6,7 +6,7 @@ USER_NAME="$(id -un)"
 USER_ID="$(id -u)"
 RUNTIME_DIR="/run/user/${USER_ID}"
 PODMAN_SOCK="${RUNTIME_DIR}/podman/podman.sock"
-UDEV_RULES="/etc/udev/rules.d/99-wolf.rules"
+UDEV_RULES="/etc/udev/rules.d/85-wolf.rules"
 
 #######################################
 # 1. Ensure required groups
@@ -52,13 +52,7 @@ echo "🔍 Checking udev rules..."
 if [[ ! -f "$UDEV_RULES" ]]; then
     echo "  ❌ missing udev rules, installing..."
 
-    sudo tee "$UDEV_RULES" >/dev/null <<EOF
-KERNEL=="renderD*", GROUP="video", MODE="0660"
-KERNEL=="card*", GROUP="video", MODE="0660"
-KERNEL=="uinput", GROUP="input", MODE="0660"
-KERNEL=="uhid", GROUP="input", MODE="0660"
-EOF
-
+    sudo curl -o "$$UDEV_RULES" https://raw.githubusercontent.com/games-on-whales/wolf/refs/heads/stable/85-wolf.rules
     sudo udevadm control --reload-rules
     sudo udevadm trigger
 
