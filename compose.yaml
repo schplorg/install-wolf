@@ -1,77 +1,32 @@
 services:
-
-  wolf1:
+  wolf:
     image: ghcr.io/games-on-whales/wolf:stable
-    container_name: wolf1
-    privileged: true
+    container_name: wolf
+
     restart: unless-stopped
 
-    environment:
-      - DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
-
     ports:
-      - "48001:48010"
-      - "47989:47989"
+      - "47984:47984/tcp"   # HTTPS
+      - "47989:47989/tcp"   # HTTP
+      - "47999:47999/udp"   # Control
+      - "48010:48010/tcp"   # RTSP
+      - "48100:48100/udp"   # Video
+      - "48200:48200/udp"   # Audio
+
+    security_opt:
+      - label=disable
 
     volumes:
-      - ./wolf1:/etc/wolf
+      - $XDG_RUNTIME_DIR/podman/podman.sock:/var/run/docker.sock:ro,Z
+      - ./wolf:/etc/wolf:Z
       - /dev/dri:/dev/dri
       - /dev/uinput:/dev/uinput
       - /dev/uhid:/dev/uhid
+      - /run/udev:/run/udev:rw
 
-  wolf2:
-    image: ghcr.io/games-on-whales/wolf:stable
-    container_name: wolf2
-    privileged: true
-    restart: unless-stopped
+    devices:
+      - /dev/dri
+      - /dev/uinput
+      - /dev/uhid
 
-    environment:
-      - DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
-
-    ports:
-      - "48011:48010"
-      - "47990:47989"
-
-    volumes:
-      - ./wolf2:/etc/wolf
-      - /dev/dri:/dev/dri
-      - /dev/uinput:/dev/uinput
-      - /dev/uhid:/dev/uhid
-
-  wolf3:
-    image: ghcr.io/games-on-whales/wolf:stable
-    container_name: wolf3
-    privileged: true
-    restart: unless-stopped
-
-    environment:
-      - DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
-
-    ports:
-      - "48021:48010"
-      - "47991:47989"
-
-    volumes:
-      - ./wolf3:/etc/wolf
-      - /dev/dri:/dev/dri
-      - /dev/uinput:/dev/uinput
-      - /dev/uhid:/dev/uhid
-
-  wolf4:
-    image: ghcr.io/games-on-whales/wolf:stable
-    container_name: wolf4
-    privileged: true
-    restart: unless-stopped
-
-    environment:
-      - DOCKER_HOST=unix:///run/user/1000/podman/podman.sock
-
-    ports:
-      - "48031:48010"
-      - "47992:47989"
-
-    volumes:
-      - ./wolf4:/etc/wolf
-      - /dev/dri:/dev/dri
-      - /dev/uinput:/dev/uinput
-      - /dev/uhid:/dev/uhid
+    ipc: private
