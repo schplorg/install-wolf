@@ -1,43 +1,17 @@
-networks:
-  wolf_macvlan:
-    driver: macvlan
-    driver_opts:
-      parent: enp5s0          # ← change to your host's physical NIC (ip link to check)
-    ipam:
-      config:
-        - subnet: 192.168.42.0/24
-          gateway: 192.168.42.1
-          ip-range: 192.168.42.128/25   # carve out a safe range so DHCP won't collide
-
 services:
-  wolf1:
+  wolf:
     image: ghcr.io/games-on-whales/wolf:stable
-    container_name: wolf1
+    container_name: wolf
     restart: unless-stopped
-    networks:
-      wolf_macvlan:
-        ipv4_address: 192.168.42.130   # static IP on your LAN
+    ports:
+      - "47984:47984/tcp"   # HTTPS
+      - "47989:47989/tcp"   # HTTP
+      - "47999:47999/udp"   # Control
+      - "48010:48010/tcp"   # RTSP
+      - "48100:48100/udp"   # Video
+      - "48200:48200/udp"   # Audio
     volumes:
-      - /etc/wolf1:/etc/wolf:rw       # separate config dir per instance
-      - /run/podman/podman.sock:/var/run/docker.sock:rw
-      - /dev/:/dev/:rw
-      - /run/udev:/run/udev:rw
-    devices:
-      - /dev/dri
-      - /dev/uinput
-      - /dev/uhid
-    device_cgroup_rules:
-      - "c 13:* rmw"
-
-  wolf2:
-    image: ghcr.io/games-on-whales/wolf:stable
-    container_name: wolf2
-    restart: unless-stopped
-    networks:
-      wolf_macvlan:
-        ipv4_address: 192.168.42.131
-    volumes:
-      - /etc/wolf2:/etc/wolf:rw       # separate config dir per instance
+      - /etc/wolf:/etc/wolf:rw
       - /run/podman/podman.sock:/var/run/docker.sock:rw
       - /dev/:/dev/:rw
       - /run/udev:/run/udev:rw
