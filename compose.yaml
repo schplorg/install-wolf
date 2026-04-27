@@ -1,18 +1,44 @@
+networks:
+  wolf_macvlan:
+    driver: macvlan
+    driver_opts:
+      parent: enp5s0
+    ipam:
+      config:
+        - subnet: 192.168.42.0/24
+          gateway: 192.168.42.1
+          ip-range: 192.168.42.128/25
+
 services:
-  wolf:
+  wolf1:
     image: ghcr.io/games-on-whales/wolf:stable
     container_name: wolf
     restart: unless-stopped
-    ports:
-      - "47984:47984/tcp"   # HTTPS
-      - "47989:47989/tcp"   # HTTP
-      - "47999:47999/udp"   # Control
-      - "48010:48010/tcp"   # RTSP
-      - "48100:48100/udp"   # Video
-      - "48200:48200/udp"   # Audio
+    networks:
+      wolf_macvlan:
+        ipv4_address: 192.168.42.130
     volumes:
-      - /etc/wolf:/etc/wolf:rw
-      - /run/podman/podman.sock:/var/run/docker.sock:rw
+      - /etc/wolf1:/etc/wolf:rw
+      - /run/wolf1/podman.sock:/var/run/docker.sock:rw
+      - /dev/:/dev/:rw
+      - /run/udev:/run/udev:rw
+    devices:
+      - /dev/dri
+      - /dev/uinput
+      - /dev/uhid
+    device_cgroup_rules:
+      - "c 13:* rmw"
+
+  wolf2:
+    image: ghcr.io/games-on-whales/wolf:stable
+    container_name: wolf
+    restart: unless-stopped
+    networks:
+      wolf_macvlan:
+        ipv4_address: 192.168.42.131
+    volumes:
+      - /etc/wolf2:/etc/wolf:rw
+      - /run/wolf2/podman.sock:/var/run/docker.sock:rw
       - /dev/:/dev/:rw
       - /run/udev:/run/udev:rw
     devices:
