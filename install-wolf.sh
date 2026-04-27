@@ -44,22 +44,15 @@ systemctl enable --now podman-wolf1 podman-wolf2
 
 sleep 3
 
-podman --root /var/lib/wolf1 --runroot /run/wolf1 network create \
+podman network create \
   --driver macvlan \
   --opt parent=enp5s0 \
   --subnet 192.168.42.0/24 \
   --gateway 192.168.42.1 \
-  wolf_macvlan
-
-podman --root /var/lib/wolf2 --runroot /run/wolf2 network create \
-  --driver macvlan \
-  --opt parent=enp5s0 \
-  --subnet 192.168.42.0/24 \
-  --gateway 192.168.42.1 \
-  wolf_macvlan
+  wolf_macvlan || true
 
 podman --root /var/lib/wolf1 --runroot /run/wolf1 run -d \
-  --name wolf1 \
+  --name wolf \
   --restart unless-stopped \
   --network wolf_macvlan \
   --ip 192.168.42.130 \
@@ -74,7 +67,7 @@ podman --root /var/lib/wolf1 --runroot /run/wolf1 run -d \
   ghcr.io/games-on-whales/wolf:stable
 
 podman --root /var/lib/wolf2 --runroot /run/wolf2 run -d \
-  --name wolf2 \
+  --name wolf \
   --restart unless-stopped \
   --network wolf_macvlan \
   --ip 192.168.42.131 \
