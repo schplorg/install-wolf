@@ -1,13 +1,32 @@
 #!/bin/bash
 set -euo pipefail
 
+mkdir -p images
+
+IMAGES=(
+  ghcr.io/games-on-whales/wolf:stable
+  ghcr.io/games-on-whales/pulseaudio:master
+  ghcr.io/games-on-whales/wolf-ui:main
+  ghcr.io/games-on-whales/lutris:edge
+)
+
+for image in "${IMAGES[@]}"; do
+  tar="images/$(echo $image | tr '/: ' '---').tar"
+  if [[ ! -f "$tar" ]]; then
+    podman pull "$image"
+    podman save "$image" -o "$tar"
+  fi
+done
+
 for i in 1 2 3 4; do
-  podman --root /var/lib/wolf${i} --runroot /run/wolf${i} \
-  ps -a --format "{{.Names}}" \
-  | xargs -r podman --root /var/lib/wolf${i} --runroot /run/wolf${i} \
-  rm -f || true
+  podman --root /var/lib/wolf${i} --runroot /run/wolf${i} rm -af || true
 
   mkdir -p /etc/wolf${i} /run/wolf${i} /var/lib/wolf${i}
+
+  for image in "${IMAGES[@]}"; do
+    tar="images/$(echo $image | tr '/: ' '---').tar"
+    podman --root /var/lib/wolf${i} --runroot /run/wolf${i} load -i "$tar"
+  done
 
   cat > /etc/systemd/system/podman-wolf${i}.service <<EOF
 [Unit]
