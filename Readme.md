@@ -1,5 +1,5 @@
 ## install-wolf
 
 ```
-./ssh-podman-num.sh logs -f wolf
+./ssh-podman-num.sh 1 logs -f wolf
 ```
