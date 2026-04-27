@@ -1,6 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
-ssh-keygen -f ~/.ssh/known_hosts -R "$2"
-ssh "$1@$2" -p 22 \
-  "podman --root /var/lib/wolf${3} --runroot /run/wolf${3} logs -f wolf"
+set -a
+[ -f .env ] && source .env
+set +a
+
+NUM="$1"
+shift
+
+ssh-keygen -f ~/.ssh/known_hosts -R "$SSH_HOST"
+ssh "$SSH_USER@$SSH_HOST" -p 22 \
+  "sudo podman --root /var/lib/wolf$NUM --runroot /run/wolf$NUM $@"
