@@ -1,82 +1,49 @@
 #!/bin/bash
 set -euo pipefail
 
-podman ps -a --format "{{.Names}}" | grep -i '^wolf' | xargs -r podman rm -f || true
-podman --root /var/lib/wolf1 --runroot /run/wolf1 ps -a --format "{{.Names}}" | xargs -r podman --root /var/lib/wolf1 --runroot /run/wolf1 rm -f || true
-podman --root /var/lib/wolf2 --runroot /run/wolf2 ps -a --format "{{.Names}}" | xargs -r podman --root /var/lib/wolf2 --runroot /run/wolf2 rm -f || true
+for i in 1 2 3 4; do
+  podman --root /var/lib/wolf${i} --runroot /run/wolf${i} \
+  ps -a --format "{{.Names}}" \
+  | xargs -r podman --root /var/lib/wolf${i} --runroot /run/wolf${i} \
+  rm -f || true
 
-mkdir -p /etc/wolf1 /etc/wolf2 /run/wolf1 /run/wolf2 /var/lib/wolf1 /var/lib/wolf2
+  mkdir -p /etc/wolf${i} /run/wolf${i} /var/lib/wolf${i}
 
-cat > /etc/systemd/system/podman-wolf1.service <<EOF
+  cat > /etc/systemd/system/podman-wolf${i}.service <<EOF
 [Unit]
-Description=Podman socket for wolf1
+Description=Podman socket for wolf${i}
 After=network.target
 
 [Service]
 ExecStart=/usr/bin/podman system service --time=0 \
-  --root /var/lib/wolf1 \
-  --runroot /run/wolf1 \
-  unix:///run/wolf1/podman.sock
+  --root /var/lib/wolf${i} \
+  --runroot /run/wolf${i} \
+  unix:///run/wolf${i}/podman.sock
 Restart=always
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
-cat > /etc/systemd/system/podman-wolf2.service <<EOF
-[Unit]
-Description=Podman socket for wolf2
-After=network.target
+  systemctl daemon-reload
+  systemctl enable --now podman-wolf${i} || true
 
-[Service]
-ExecStart=/usr/bin/podman system service --time=0 \
-  --root /var/lib/wolf2 \
-  --runroot /run/wolf2 \
-  unix:///run/wolf2/podman.sock
-Restart=always
+  sleep 3
 
-[Install]
-WantedBy=multi-user.target
-EOF
+  podman --root /var/lib/wolf${i} --runroot /run/wolf${i} network create \
+    --driver macvlan \
+    --opt parent=enp5s0 \
+    --subnet 192.168.42.0/24 \
+    --gateway 192.168.42.1 \
+    wolf_macvlan || true
 
-systemctl daemon-reload
-systemctl enable --now podman-wolf1 podman-wolf2
-
-sleep 3
-
-podman network create \
-  --driver macvlan \
-  --opt parent=enp5s0 \
-  --subnet 192.168.42.0/24 \
-  --gateway 192.168.42.1 \
-  wolf_macvlan || true
-
-podman --root /var/lib/wolf1 --runroot /run/wolf1 run -d \
-  --name wolf \
-  --restart unless-stopped \
-  --network wolf_macvlan \
-  --ip 192.168.42.130 \
-  -v /etc/wolf1:/etc/wolf:rw \
-  -v /run/wolf1/podman.sock:/var/run/docker.sock:rw \
-  -v /dev/:/dev/:rw \
-  -v /run/udev:/run/udev:rw \
-  --device /dev/dri \
-  --device /dev/uinput \
-  --device /dev/uhid \
-  --device-cgroup-rule "c 13:* rmw" \
-  ghcr.io/games-on-whales/wolf:stable
-
-podman --root /var/lib/wolf2 --runroot /run/wolf2 run -d \
-  --name wolf \
-  --restart unless-stopped \
-  --network wolf_macvlan \
-  --ip 192.168.42.131 \
-  -v /etc/wolf2:/etc/wolf:rw \
-  -v /run/wolf2/podman.sock:/var/run/docker.sock:rw \
-  -v /dev/:/dev/:rw \
-  -v /run/udev:/run/udev:rw \
-  --device /dev/dri \
-  --device /dev/uinput \
-  --device /dev/uhid \
-  --device-cgroup-rule "c 13:* rmw" \
-  ghcr.io/games-on-whales/wolf:stable
+  podman --root /var/lib/wolf${i} --runroot /run/wolf${i} run -d \
+    --name wolf --restart unless-stopped \
+    --network wolf_macvlan --ip 192.168.42.$((129 + i)) \
+    -v /etc/wolf${i}:/etc/wolf:rw \
+    -v /run/wolf${i}/podman.sock:/var/run/docker.sock:rw \
+    -v /dev/:/dev/:rw -v /run/udev:/run/udev:rw \
+    --device /dev/dri --device /dev/uinput --device /dev/uhid \
+    --device-cgroup-rule "c 13:* rmw" \
+    ghcr.io/games-on-whales/wolf:stable
+done

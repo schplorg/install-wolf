@@ -1,4 +1,7 @@
 #!/bin/bash
-sudo podman ps -a --format "{{.Names}}" | grep -i '^wolf' | xargs -r sudo podman rm -f
-sudo podman container prune -f
-sudo podman pod prune -f
+for i in 1 2 3 4; do
+  podman --root /var/lib/wolf${i} --runroot /run/wolf${i} \
+  ps -a --format "{{.Names}}" \
+  | xargs -r podman --root /var/lib/wolf${i} --runroot /run/wolf${i} \
+  rm -f || true
+end
