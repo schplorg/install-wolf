@@ -27,7 +27,7 @@ env = [
 ]
 image = "ghcr.io/games-on-whales/lutris:edge"
 mounts = ["lutris:/var/lutris/:rw"]
-name = "WolfLutris"
+name = "WolfLutris1"
 ports = []
 type = "docker"
 
@@ -59,6 +59,6 @@ env = [
 ]
 image = "ghcr.io/games-on-whales/lutris:edge"
 mounts = ["lutris:/var/lutris/:rw"]
-name = "WolfLutris"
+name = "WolfLutris2"
 ports = []
 type = "docker"
