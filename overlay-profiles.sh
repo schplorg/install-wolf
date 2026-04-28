@@ -37,5 +37,6 @@ setup_overlays /etc/wolf/lutris-template \
 
 setup_overlays /etc/wolf/profile-data/user-template \
   /etc/wolf/profile-data/user1 \
+  /etc/wolf/profile-data/user2 \
   /etc/wolf/profile-data/user3 \
   /etc/wolf/profile-data/user4
