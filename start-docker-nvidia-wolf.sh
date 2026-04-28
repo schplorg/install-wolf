@@ -71,7 +71,7 @@ else
     --restart unless-stopped \
     --network=host \
     -e NVIDIA_DRIVER_VOLUME_NAME=nvidia-driver-vol \
-    -v nvidia-driver-vol:/usr/nvidia:rw \
+    -v nvidia-driver-vol:/run/nvidia:rw \
     -v /etc/wolf:/etc/wolf:rw \
     -v /var/run/docker.sock:/var/run/docker.sock:rw \
     --device /dev/nvidia-uvm \
