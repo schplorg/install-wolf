@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 CONFIG="/etc/wolf/cfg/config.toml"
-CUSTOM="custom-exposed-host.toml"
+CUSTOM="custom-exposed-host-nvidia.toml"
 MARKER="# STARTCUSTOM"
 
 read -p "Use macvlan local network config? (y/n): " USE_LOCAL

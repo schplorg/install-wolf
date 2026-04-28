@@ -1,0 +1,140 @@
+# STARTCUSTOM
+[[profiles]]
+id = "user1"
+name = "User1"
+
+[[profiles.apps]]
+icon_png_path = "https://games-on-whales.github.io/wildlife/apps/lutris/assets/icon.png"
+start_virtual_compositor = true
+title = "Lutris"
+
+[profiles.apps.runner]
+base_create_json = '''
+{
+  "HostConfig": {
+    "IpcMode": "host",
+    "CapAdd": ["SYS_ADMIN", "SYS_NICE", "SYS_PTRACE", "NET_RAW", "MKNOD", "NET_ADMIN"],
+    "SecurityOpt": ["seccomp=unconfined", "apparmor=unconfined"],
+    "Ulimits": [{"Name":"nofile", "Hard":524288, "Soft":524288}],
+    "Privileged": false,
+    "DeviceCgroupRules": ["c 13:* rmw", "c 244:* rmw"]
+  }
+}
+'''
+devices = []
+env = [
+  "RUN_SWAY=1",
+  "GOW_REQUIRED_DEVICES=/dev/input/event* /dev/dri/* /dev/nvidia* /var/lutris/",
+  "PRESSURE_VESSEL_FILESYSTEMS_RW=/usr/nvidia",
+  "STEAM_RUNTIME_PREFER_HOST_LIBRARIES=1"
+]
+image = "ghcr.io/games-on-whales/lutris:edge"
+mounts = ["/etc/wolf/lutris1:/var/lutris/:rw"]
+name = "WolfLutris"
+ports = []
+type = "docker"
+
+[[profiles]]
+id = "user2"
+name = "User2"
+
+[[profiles.apps]]
+icon_png_path = "https://games-on-whales.github.io/wildlife/apps/lutris/assets/icon.png"
+start_virtual_compositor = true
+title = "Lutris"
+
+[profiles.apps.runner]
+base_create_json = '''
+{
+  "HostConfig": {
+    "IpcMode": "host",
+    "CapAdd": ["SYS_ADMIN", "SYS_NICE", "SYS_PTRACE", "NET_RAW", "MKNOD", "NET_ADMIN"],
+    "SecurityOpt": ["seccomp=unconfined", "apparmor=unconfined"],
+    "Ulimits": [{"Name":"nofile", "Hard":524288, "Soft":524288}],
+    "Privileged": false,
+    "DeviceCgroupRules": ["c 13:* rmw", "c 244:* rmw"]
+  }
+}
+'''
+devices = []
+env = [
+  "RUN_SWAY=1",
+  "GOW_REQUIRED_DEVICES=/dev/input/event* /dev/dri/* /dev/nvidia* /var/lutris/",
+  "PRESSURE_VESSEL_FILESYSTEMS_RW=/usr/nvidia",
+  "STEAM_RUNTIME_PREFER_HOST_LIBRARIES=1"
+]
+image = "ghcr.io/games-on-whales/lutris:edge"
+mounts = ["/etc/wolf/lutris2:/var/lutris/:rw"]
+name = "WolfLutris"
+ports = []
+type = "docker"
+
+[[profiles]]
+id = "user3"
+name = "User3"
+
+[[profiles.apps]]
+icon_png_path = "https://games-on-whales.github.io/wildlife/apps/lutris/assets/icon.png"
+start_virtual_compositor = true
+title = "Lutris"
+
+[profiles.apps.runner]
+base_create_json = '''
+{
+  "HostConfig": {
+    "IpcMode": "host",
+    "CapAdd": ["SYS_ADMIN", "SYS_NICE", "SYS_PTRACE", "NET_RAW", "MKNOD", "NET_ADMIN"],
+    "SecurityOpt": ["seccomp=unconfined", "apparmor=unconfined"],
+    "Ulimits": [{"Name":"nofile", "Hard":524288, "Soft":524288}],
+    "Privileged": false,
+    "DeviceCgroupRules": ["c 13:* rmw", "c 244:* rmw"]
+  }
+}
+'''
+devices = []
+env = [
+  "RUN_SWAY=1",
+  "GOW_REQUIRED_DEVICES=/dev/input/event* /dev/dri/* /dev/nvidia* /var/lutris/",
+  "PRESSURE_VESSEL_FILESYSTEMS_RW=/usr/nvidia",
+  "STEAM_RUNTIME_PREFER_HOST_LIBRARIES=1"
+]
+image = "ghcr.io/games-on-whales/lutris:edge"
+mounts = ["/etc/wolf/lutris3:/var/lutris/:rw"]
+name = "WolfLutris"
+ports = []
+type = "docker"
+
+[[profiles]]
+id = "user4"
+name = "User4"
+
+[[profiles.apps]]
+icon_png_path = "https://games-on-whales.github.io/wildlife/apps/lutris/assets/icon.png"
+start_virtual_compositor = true
+title = "Lutris"
+
+[profiles.apps.runner]
+base_create_json = '''
+{
+  "HostConfig": {
+    "IpcMode": "host",
+    "CapAdd": ["SYS_ADMIN", "SYS_NICE", "SYS_PTRACE", "NET_RAW", "MKNOD", "NET_ADMIN"],
+    "SecurityOpt": ["seccomp=unconfined", "apparmor=unconfined"],
+    "Ulimits": [{"Name":"nofile", "Hard":524288, "Soft":524288}],
+    "Privileged": false,
+    "DeviceCgroupRules": ["c 13:* rmw", "c 244:* rmw"]
+  }
+}
+'''
+devices = []
+env = [
+  "RUN_SWAY=1",
+  "GOW_REQUIRED_DEVICES=/dev/input/event* /dev/dri/* /dev/nvidia* /var/lutris/",
+  "PRESSURE_VESSEL_FILESYSTEMS_RW=/usr/nvidia",
+  "STEAM_RUNTIME_PREFER_HOST_LIBRARIES=1"
+]
+image = "ghcr.io/games-on-whales/lutris:edge"
+mounts = ["/etc/wolf/lutris4:/var/lutris/:rw"]
+name = "WolfLutris"
+ports = []
+type = "docker"
