@@ -45,11 +45,18 @@ docker run -d \
   ghcr.io/games-on-whales/wolf:stable
 
 else
-  echo "Building NVIDIA driver container..."
+  NV_TAR="images/gow---nvidia-driver---latest.tar"
 
-  curl https://raw.githubusercontent.com/games-on-whales/gow/master/images/nvidia-driver/Dockerfile | \
-    docker build -t gow/nvidia-driver:latest -f - \
-    --build-arg NV_VERSION=$(cat /sys/module/nvidia/version) .
+  if [[ -f "$NV_TAR" ]]; then
+    echo "Loading cached NVIDIA driver image..."
+    docker load -i "$NV_TAR"
+  else
+    echo "Building NVIDIA driver container..."
+    curl https://raw.githubusercontent.com/games-on-whales/gow/master/images/nvidia-driver/Dockerfile | \
+      docker build -t gow/nvidia-driver:latest -f - \
+      --build-arg NV_VERSION="$(cat /sys/module/nvidia/version)" .
+    docker save gow/nvidia-driver:latest -o "$NV_TAR"
+  fi
 
   docker volume rm nvidia-driver-vol 2>/dev/null || true
 
