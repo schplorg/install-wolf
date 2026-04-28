@@ -26,7 +26,9 @@ env = [
   "RUN_SWAY=1",
   "GOW_REQUIRED_DEVICES=/dev/input/event* /dev/dri/* /dev/nvidia* /var/lutris/",
   "PRESSURE_VESSEL_FILESYSTEMS_RW=/usr/nvidia",
-  "STEAM_RUNTIME_PREFER_HOST_LIBRARIES=1"
+  "STEAM_RUNTIME_PREFER_HOST_LIBRARIES=1",
+  "VK_DRIVER_FILES=/usr/nvidia/share/vulkan/icd.d/nvidia_icd.json",
+  "LD_LIBRARY_PATH=/usr/nvidia/lib:/usr/nvidia/lib32"
 ]
 image = "ghcr.io/games-on-whales/lutris:edge"
 mounts = ["/etc/wolf/lutris1:/var/lutris/:rw"]
@@ -61,7 +63,9 @@ env = [
   "RUN_SWAY=1",
   "GOW_REQUIRED_DEVICES=/dev/input/event* /dev/dri/* /dev/nvidia* /var/lutris/",
   "PRESSURE_VESSEL_FILESYSTEMS_RW=/usr/nvidia",
-  "STEAM_RUNTIME_PREFER_HOST_LIBRARIES=1"
+  "STEAM_RUNTIME_PREFER_HOST_LIBRARIES=1",
+  "VK_DRIVER_FILES=/usr/nvidia/share/vulkan/icd.d/nvidia_icd.json",
+  "LD_LIBRARY_PATH=/usr/nvidia/lib:/usr/nvidia/lib32"
 ]
 image = "ghcr.io/games-on-whales/lutris:edge"
 mounts = ["/etc/wolf/lutris2:/var/lutris/:rw"]
@@ -96,7 +100,9 @@ env = [
   "RUN_SWAY=1",
   "GOW_REQUIRED_DEVICES=/dev/input/event* /dev/dri/* /dev/nvidia* /var/lutris/",
   "PRESSURE_VESSEL_FILESYSTEMS_RW=/usr/nvidia",
-  "STEAM_RUNTIME_PREFER_HOST_LIBRARIES=1"
+  "STEAM_RUNTIME_PREFER_HOST_LIBRARIES=1",
+  "VK_DRIVER_FILES=/usr/nvidia/share/vulkan/icd.d/nvidia_icd.json",
+  "LD_LIBRARY_PATH=/usr/nvidia/lib:/usr/nvidia/lib32"
 ]
 image = "ghcr.io/games-on-whales/lutris:edge"
 mounts = ["/etc/wolf/lutris3:/var/lutris/:rw"]
@@ -131,7 +137,9 @@ env = [
   "RUN_SWAY=1",
   "GOW_REQUIRED_DEVICES=/dev/input/event* /dev/dri/* /dev/nvidia* /var/lutris/",
   "PRESSURE_VESSEL_FILESYSTEMS_RW=/usr/nvidia",
-  "STEAM_RUNTIME_PREFER_HOST_LIBRARIES=1"
+  "STEAM_RUNTIME_PREFER_HOST_LIBRARIES=1",
+  "VK_DRIVER_FILES=/usr/nvidia/share/vulkan/icd.d/nvidia_icd.json",
+  "LD_LIBRARY_PATH=/usr/nvidia/lib:/usr/nvidia/lib32"
 ]
 image = "ghcr.io/games-on-whales/lutris:edge"
 mounts = ["/etc/wolf/lutris4:/var/lutris/:rw"]
