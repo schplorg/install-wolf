@@ -3,8 +3,6 @@ set -e
 
 [ "$(id -u)" -ne 0 ] && echo "must be root" && exit 1
 
-read -p "Use NVIDIA Container Toolkit method? (not recommended) (y/n): " USE_TOOLKIT
-
 mkdir -p images
 
 IMAGES=(
@@ -27,65 +25,44 @@ docker ps -a --format "{{.Names}}" \
   | grep -iE '^wolf' \
   | xargs -r docker rm -f
 
-if [[ "$USE_TOOLKIT" == "y" ]]; then
+NV_TAR="images/gow---nvidia-driver---latest.tar"
+
+if [[ -f "$NV_TAR" ]]; then
+  echo "Loading cached NVIDIA driver image..."
+  docker load -i "$NV_TAR"
+else
+  echo "Building NVIDIA driver container..."
+  curl https://raw.githubusercontent.com/games-on-whales/gow/master/images/nvidia-driver/Dockerfile | \
+    docker build -t gow/nvidia-driver:latest -f - \
+    --build-arg NV_VERSION="$(cat /sys/module/nvidia/version)" .
+  docker save gow/nvidia-driver:latest -o "$NV_TAR"
+fi
+
+docker volume rm nvidia-driver-vol 2>/dev/null || true
+
+docker create --rm \
+  --mount source=nvidia-driver-vol,destination=/usr/nvidia \
+  gow/nvidia-driver:latest sh
 
 docker run -d \
   --name wolf \
   --restart unless-stopped \
   --network=host \
-  -e NVIDIA_DRIVER_CAPABILITIES=all \
-  -e NVIDIA_VISIBLE_DEVICES=all \
-  --gpus=all \
+  -e NVIDIA_DRIVER_VOLUME_NAME=nvidia-driver-vol \
+  -v nvidia-driver-vol:/usr/nvidia:rw \
   -v /etc/wolf:/etc/wolf:rw \
   -v /var/run/docker.sock:/var/run/docker.sock:rw \
+  --device /dev/nvidia-uvm \
+  --device /dev/nvidia-uvm-tools \
   --device /dev/dri/ \
+  --device /dev/nvidia-caps/nvidia-cap1 \
+  --device /dev/nvidia-caps/nvidia-cap2 \
+  --device /dev/nvidiactl \
+  --device /dev/nvidia0 \
+  --device /dev/nvidia-modeset \
   --device /dev/uinput \
   --device /dev/uhid \
   -v /dev/:/dev/:rw \
   -v /run/udev:/run/udev:rw \
   --device-cgroup-rule "c 13:* rmw" \
   ghcr.io/games-on-whales/wolf:stable
-
-else
-  NV_TAR="images/gow---nvidia-driver---latest.tar"
-
-  if [[ -f "$NV_TAR" ]]; then
-    echo "Loading cached NVIDIA driver image..."
-    docker load -i "$NV_TAR"
-  else
-    echo "Building NVIDIA driver container..."
-    curl https://raw.githubusercontent.com/games-on-whales/gow/master/images/nvidia-driver/Dockerfile | \
-      docker build -t gow/nvidia-driver:latest -f - \
-      --build-arg NV_VERSION="$(cat /sys/module/nvidia/version)" .
-    docker save gow/nvidia-driver:latest -o "$NV_TAR"
-  fi
-
-  docker volume rm nvidia-driver-vol 2>/dev/null || true
-
-  docker create --rm \
-    --mount source=nvidia-driver-vol,destination=/usr/nvidia \
-    gow/nvidia-driver:latest sh
-
-  docker run -d \
-    --name wolf \
-    --restart unless-stopped \
-    --network=host \
-    -e NVIDIA_DRIVER_VOLUME_NAME=nvidia-driver-vol \
-    -v nvidia-driver-vol:/usr/nvidia:rw \
-    -v /etc/wolf:/etc/wolf:rw \
-    -v /var/run/docker.sock:/var/run/docker.sock:rw \
-    --device /dev/nvidia-uvm \
-    --device /dev/nvidia-uvm-tools \
-    --device /dev/dri/ \
-    --device /dev/nvidia-caps/nvidia-cap1 \
-    --device /dev/nvidia-caps/nvidia-cap2 \
-    --device /dev/nvidiactl \
-    --device /dev/nvidia0 \
-    --device /dev/nvidia-modeset \
-    --device /dev/uinput \
-    --device /dev/uhid \
-    -v /dev/:/dev/:rw \
-    -v /run/udev:/run/udev:rw \
-    --device-cgroup-rule "c 13:* rmw" \
-    ghcr.io/games-on-whales/wolf:stable
-fi
