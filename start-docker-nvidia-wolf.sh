@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+[ "$(id -u)" -ne 0 ] && echo "must be root" && exit 1
+
 read -p "Use NVIDIA Container Toolkit method? (not recommended) (y/n): " USE_TOOLKIT
 
 mkdir -p images

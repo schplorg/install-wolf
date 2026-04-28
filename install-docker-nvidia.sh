@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+[ "$(id -u)" -ne 0 ] && echo "must be root" && exit 1
+
 echo "=== Wolf + NVIDIA Setup (Ubuntu 22.04) ==="
 
 # -------- CONFIG PROMPTS --------

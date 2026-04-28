@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+[ "$(id -u)" -ne 0 ] && echo "must be root" && exit 1
+
 CONFIG="/etc/wolf/cfg/config.toml"
 CUSTOM="custom-exposed-host-nvidia.toml"
 MARKER="# STARTCUSTOM"

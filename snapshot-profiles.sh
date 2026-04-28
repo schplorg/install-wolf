@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[ "$(id -u)" -ne 0 ] && echo "must be root" && exit 1
+
 template1=/etc/wolf/lutris-template
 targets1=(
   /etc/wolf/lutris1

@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+[ "$(id -u)" -ne 0 ] && echo "must be root" && exit 1
+
 OVERLAY_BASE=/etc/wolf/.overlays
 
 setup_overlays() {
