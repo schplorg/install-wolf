@@ -27,10 +27,7 @@ env = [
   "GOW_REQUIRED_DEVICES=/dev/input/event* /dev/dri/* /dev/nvidia* /var/lutris/"
 ]
 image = "ghcr.io/games-on-whales/lutris:edge"
-mounts = [
-  "/etc/wolf/lutris1:/var/lutris/:rw",
-  "/etc/wolf/lutris1/lutris-system.yml:/opt/gow/lutris-system.yml:rw"
-]
+mounts = ["/etc/wolf/lutris1:/var/lutris/:rw"]
 name = "WolfLutris"
 ports = []
 type = "docker"
@@ -63,10 +60,7 @@ env = [
   "GOW_REQUIRED_DEVICES=/dev/input/event* /dev/dri/* /dev/nvidia* /var/lutris/"
 ]
 image = "ghcr.io/games-on-whales/lutris:edge"
-mounts = [
-  "/etc/wolf/lutris2:/var/lutris/:rw",
-  "/etc/wolf/lutris2/lutris-system.yml:/opt/gow/lutris-system.yml:rw"
-]
+mounts = ["/etc/wolf/lutris2:/var/lutris/:rw"]
 name = "WolfLutris"
 ports = []
 type = "docker"
@@ -99,10 +93,7 @@ env = [
   "GOW_REQUIRED_DEVICES=/dev/input/event* /dev/dri/* /dev/nvidia* /var/lutris/"
 ]
 image = "ghcr.io/games-on-whales/lutris:edge"
-mounts = [
-  "/etc/wolf/lutris3:/var/lutris/:rw",
-  "/etc/wolf/lutris3/lutris-system.yml:/opt/gow/lutris-system.yml:rw"
-]
+mounts = ["/etc/wolf/lutris3:/var/lutris/:rw"]
 name = "WolfLutris"
 ports = []
 type = "docker"
@@ -135,10 +126,7 @@ env = [
   "GOW_REQUIRED_DEVICES=/dev/input/event* /dev/dri/* /dev/nvidia* /var/lutris/"
 ]
 image = "ghcr.io/games-on-whales/lutris:edge"
-mounts = [
-  "/etc/wolf/lutris4:/var/lutris/:rw",
-  "/etc/wolf/lutris4/lutris-system.yml:/opt/gow/lutris-system.yml:rw"
-]
+mounts = ["/etc/wolf/lutris4:/var/lutris/:rw"]
 name = "WolfLutris"
 ports = []
 type = "docker"
