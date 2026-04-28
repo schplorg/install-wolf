@@ -18,13 +18,6 @@ for image in "${IMAGES[@]}"; do
   podman load -i "$tar"
 done
 
-podman network create \
-  --driver macvlan \
-  --opt parent=enp5s0 \
-  --subnet 192.168.42.0/24 \
-  --gateway 192.168.42.1 \
-  wolf_macvlan
-
 podman ps -a --format "{{.Names}}" \
   | grep -iE '^wolf' \
   | xargs -r podman rm -f

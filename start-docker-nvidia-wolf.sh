@@ -21,13 +21,6 @@ for image in "${IMAGES[@]}"; do
   docker load -i "$tar"
 done
 
-docker network create \
-  --driver macvlan \
-  --opt parent=enp5s0 \
-  --subnet 192.168.42.0/24 \
-  --gateway 192.168.42.1 \
-  wolf_macvlan
-
 docker ps -a --format "{{.Names}}" \
   | grep -iE '^wolf' \
   | xargs -r docker rm -f
