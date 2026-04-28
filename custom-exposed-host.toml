@@ -29,7 +29,7 @@ env = [
 image = "ghcr.io/games-on-whales/lutris:edge"
 mounts = [
   "/etc/wolf/lutris1:/var/lutris/:rw",
-  "/etc/wolf/lutris1/lutris-lutris.conf:/opt/gow/lutris-lutris.conf:rw"
+  "/etc/wolf/lutris1/lutris-system.yml:/opt/gow/lutris-system.yml:rw"
 ]
 name = "WolfLutris"
 ports = []
@@ -65,7 +65,7 @@ env = [
 image = "ghcr.io/games-on-whales/lutris:edge"
 mounts = [
   "/etc/wolf/lutris2:/var/lutris/:rw",
-  "/etc/wolf/lutris2/lutris-lutris.conf:/opt/gow/lutris-lutris.conf:rw"
+  "/etc/wolf/lutris2/lutris-system.yml:/opt/gow/lutris-system.yml:rw"
 ]
 name = "WolfLutris"
 ports = []
@@ -101,7 +101,7 @@ env = [
 image = "ghcr.io/games-on-whales/lutris:edge"
 mounts = [
   "/etc/wolf/lutris3:/var/lutris/:rw",
-  "/etc/wolf/lutris3/lutris-lutris.conf:/opt/gow/lutris-lutris.conf:rw"
+  "/etc/wolf/lutris3/lutris-system.yml:/opt/gow/lutris-system.yml:rw"
 ]
 name = "WolfLutris"
 ports = []
@@ -137,7 +137,7 @@ env = [
 image = "ghcr.io/games-on-whales/lutris:edge"
 mounts = [
   "/etc/wolf/lutris4:/var/lutris/:rw",
-  "/etc/wolf/lutris4/lutris-lutris.conf:/opt/gow/lutris-lutris.conf:rw"
+  "/etc/wolf/lutris4/lutris-system.yml:/opt/gow/lutris-system.yml:rw"
 ]
 name = "WolfLutris"
 ports = []
