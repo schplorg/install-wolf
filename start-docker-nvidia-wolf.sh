@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-read -p "Use NVIDIA Container Toolkit method? (recommended) (y/n): " USE_TOOLKIT
+read -p "Use NVIDIA Container Toolkit method? (not recommended) (y/n): " USE_TOOLKIT
 
 mkdir -p images
 
