@@ -28,6 +28,10 @@ docker network create \
   --gateway 192.168.42.1 \
   wolf_macvlan
 
+docker ps -a --format "{{.Names}}" \
+  | grep -iE '^wolf' \
+  | xargs -r docker rm -f
+
 if [[ "$USE_TOOLKIT" == "y" ]]; then
 
 docker run -d \
