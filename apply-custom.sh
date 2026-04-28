@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 CONFIG="/etc/wolf/cfg/config.toml"
-CUSTOM="custom.toml"
+CUSTOM="$1"
 MARKER="# STARTCUSTOM"
 
 if grep -qF "$MARKER" "$CONFIG"; then
