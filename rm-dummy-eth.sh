@@ -8,6 +8,8 @@ source .env
 SUBNET="192.168.42.0/24"
 
 iptables -t nat -D POSTROUTING -s "$SUBNET" -o "$LAN_ADAPTER" -j MASQUERADE || true
-iptables -D FORWARD -i "$LAN_ADAPTER" -o "$DUMMY_ADAPTER" -m state --state RELATED,ESTABLISHED -j ACCEPT || true
-iptables -D FORWARD -i "$DUMMY_ADAPTER" -o "$LAN_ADAPTER" -j ACCEPT || true
+iptables -D FORWARD -i "$LAN_ADAPTER" -o "$HOST_IF" -m state --state RELATED,ESTABLISHED -j ACCEPT || true
+iptables -D FORWARD -i "$HOST_IF" -o "$LAN_ADAPTER" -j ACCEPT || true
+
+ip link delete "$HOST_IF" || true
 ip link delete "$DUMMY_ADAPTER" || true
