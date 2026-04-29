@@ -25,7 +25,7 @@ done
 
 $CONTAINER_TOOL ps -a --format "{{.Names}}" \
   | grep -iE '^wolf' \
-  | xargs -r $CONTAINER_TOOL rm -f
+  | xargs -r $CONTAINER_TOOL rm -f || true
 
 if [[ "$GPU" == "nvidia" ]]; then
   NV_TAR="images/gow---nvidia-driver---latest.tar"
