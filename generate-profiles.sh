@@ -14,8 +14,6 @@ MARKER="# STARTCUSTOM"
 # Remove any previous custom block
 if grep -qF "$MARKER" "$CONFIG"; then
   sed -i "/^$MARKER$/q" "$CONFIG"
-  # Remove the marker line itself so we re-append cleanly
-  sed -i "/$MARKER/d" "$CONFIG"
 fi
 
 {
