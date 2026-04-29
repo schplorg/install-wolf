@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
 [ "$(id -u)" -ne 0 ] && echo "must be root" && exit 1
 
-set -euo pipefail
 source .env
 
-$CONTAINER_TOOL rm -f $($CONTAINER_TOOL ps -a --format "{{.Names}}" | grep -iE '^wolf')
-$CONTAINER_TOOL network rm wolf_macvlan || true
+$CONTAINER_TOOL rm -f $($CONTAINER_TOOL ps -a --format "{{.Names}}" | grep -iE '^wolf') || true
+$CONTAINER_TOOL network rm wolf_macvlan 2>/dev/null || true

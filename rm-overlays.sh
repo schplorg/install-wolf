@@ -1,25 +1,17 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
 set -euo pipefail
+
+[ "$(id -u)" -ne 0 ] && echo "must be root" && exit 1
+
+source .env
 
 OVERLAY_BASE=/etc/wolf/.overlays
 
-targets=(
-  /etc/wolf/lutris1
-  /etc/wolf/lutris2
-  /etc/wolf/lutris3
-  /etc/wolf/lutris4
-  /etc/wolf/profile-data/user1
-  /etc/wolf/profile-data/user2
-  /etc/wolf/profile-data/user3
-  /etc/wolf/profile-data/user4
-)
-
-for target in "${targets[@]}"; do
-  if mountpoint -q "$target" 2>/dev/null; then
-    umount "$target"
-  fi
-  rm -rf "$target"
+for i in $(seq 1 "$NUM_PROFILES"); do
+  for target in "/etc/wolf/lutris${i}" "/etc/wolf/profile-data/user${i}"; do
+    mountpoint -q "$target" 2>/dev/null && umount "$target"
+    rm -rf "$target"
+  done
 done
 
 rm -rf "$OVERLAY_BASE"
