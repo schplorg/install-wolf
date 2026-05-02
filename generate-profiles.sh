@@ -13,7 +13,7 @@ MARKER="# STARTCUSTOM"
 
 # Remove any previous custom block
 if grep -qF "$MARKER" "$CONFIG"; then
-  sed -i "/^$MARKER$/q" "$CONFIG"
+  sed -i "/^$MARKER$/,\$d" "$CONFIG"
 fi
 
 {
