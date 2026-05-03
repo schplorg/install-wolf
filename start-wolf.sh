@@ -45,7 +45,6 @@ if [[ "$GPU" == "nvidia" ]]; then
 
   docker run -d \
     --name wolf \
-    --rm \
     --network=host \
     -e NVIDIA_DRIVER_VOLUME_NAME=nvidia-driver-vol \
     -v nvidia-driver-vol:/usr/nvidia:rw \
@@ -71,7 +70,6 @@ else
   if [[ "$CONTAINER_TOOL" == "docker" ]]; then
     docker run -d \
       --name wolf \
-      --rm \
       --network=host \
       -v /etc/wolf:/etc/wolf:rw \
       -v /run/docker/docker.sock:/var/run/docker.sock:rw \
@@ -85,7 +83,6 @@ else
   else
     podman run -d \
       --name wolf \
-      --rm \
       --network=host \
       -v /etc/wolf:/etc/wolf:rw \
       -v /run/podman/podman.sock:/var/run/docker.sock:rw \
