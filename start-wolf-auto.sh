@@ -11,6 +11,7 @@ bash overlay-profiles.sh
 bash generate-profiles.sh
 
 if [[ "$NETWORK_MODE" == "macvlan" ]]; then
+  bash rm-macvlan.sh
   if [[ -n "$DUMMY_ADAPTER" ]]; then
     bash rm-dummy-eth.sh
     bash create-dummy-eth.sh
