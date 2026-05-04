@@ -77,6 +77,7 @@ env = [
 image = "ghcr.io/games-on-whales/lutris:edge"
 mounts = [
   "/etc/wolf/lutris${NUM}:/var/lutris/:rw",
+  "/etc/wolf/lutris${NUM}/sway/config:/home/retro/config"
   "/etc/wolf/lutris${NUM}/sway/config:/home/retro/.config/sway/config"
 ]
 name = "WolfLutris"
