@@ -75,7 +75,10 @@ env = [
   "GOW_REQUIRED_DEVICES=/dev/input/event* /dev/dri/* /dev/nvidia* /var/lutris/"
 ]
 image = "ghcr.io/games-on-whales/lutris:edge"
-mounts = ["/etc/wolf/lutris${NUM}:/var/lutris/:rw"]
+mounts = [
+  "/etc/wolf/lutris${NUM}:/var/lutris/:rw",
+  /etc/wolf/lutris${NUM}/sway/config:/home/retro/.config/sway/config
+]
 name = "WolfLutris"
 ports = []
 type = "docker"
