@@ -20,7 +20,3 @@ if [[ "$NETWORK_MODE" == "macvlan" ]]; then
 fi
 
 bash start-wolf.sh
-
-# AVP 2010 workaround
-timedatectl set-ntp false
-date -s "2010-12-19 12:00:00"
