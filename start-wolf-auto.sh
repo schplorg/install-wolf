@@ -5,11 +5,8 @@ set -euo pipefail
 
 source .env
 
-echo 5
 bash stop-wolf.sh
-echo 4
 bash rm-overlays.sh
-echo 3
 bash overlay-profiles.sh
 bash generate-profiles.sh
 

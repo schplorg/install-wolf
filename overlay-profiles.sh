@@ -2,7 +2,6 @@
 set -euo pipefail
 
 [ "$(id -u)" -ne 0 ] && echo "must be root" && exit 1
-echo 2
 
 source .env
 
@@ -23,11 +22,11 @@ setup_overlays() {
     rm -rf "${OVERLAY_BASE:?}/$name"
     mkdir -p "$upper" "$work" "$target"
 
-    echo 1
     mount -t overlay overlay \
       -o lowerdir="$template",upperdir="$upper",workdir="$work" \
       "$target"
-    echo 0
+    # mount: /etc/wolf/lutris1: special device overlay does not exist.
+    #   dmesg(1) may have more information after failed mount system call.
   done
 }
 
