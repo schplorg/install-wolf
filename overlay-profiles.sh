@@ -20,7 +20,7 @@ setup_overlays() {
 
     mountpoint -q "$target" 2>/dev/null && umount "$target"
     rm -rf "${OVERLAY_BASE:?}/$name"
-    mkdir -p "$upper" "$work" "$target"
+    mkdir -p "$upper" "$work" "$target" "$template"
 
     mount -t overlay overlay \
       -o lowerdir="$template",upperdir="$upper",workdir="$work" \
