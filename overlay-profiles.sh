@@ -2,6 +2,7 @@
 set -euo pipefail
 
 [ "$(id -u)" -ne 0 ] && echo "must be root" && exit 1
+echo 2
 
 source .env
 
@@ -13,7 +14,7 @@ setup_overlays() {
   local targets=("$@")
 
   for target in "${targets[@]}"; do
-    mkdir -p "$target"
+    echo 1
     local name
     name=$(echo "$target" | tr '/' '_' | sed 's/^_//')
     local upper="$OVERLAY_BASE/$name/upper"
