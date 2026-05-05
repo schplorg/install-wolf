@@ -8,7 +8,7 @@ echo "=== NVIDIA + Docker Install ==="
 read -rp "Install NVIDIA driver automatically? [y/N]: " INSTALL_DRIVER
 read -rp "Install NVIDIA Container Toolkit? (recommended) [y/N]: " USE_TOOLKIT
 
-apt update && apt upgrade -y
+apt update
 
 if [[ "${INSTALL_DRIVER,,}" == "y" ]]; then
   apt install -y ubuntu-drivers-common
