@@ -16,6 +16,12 @@ IMAGES=(
 
 for image in "${IMAGES[@]}"; do
   tar="images/$(echo "$image" | tr '/: ' '---').tar"
+
+  if $CONTAINER_TOOL image inspect "$image" &>/dev/null; then
+    echo "Image already loaded, skipping: $image"
+    continue
+  fi
+
   if [[ ! -f "$tar" ]]; then
     $CONTAINER_TOOL pull "$image"
     $CONTAINER_TOOL save "$image" -o "$tar"
