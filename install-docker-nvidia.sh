@@ -3,6 +3,8 @@ set -euo pipefail
 
 [ "$(id -u)" -ne 0 ] && echo "must be root" && exit 1
 
+mkdir -p /etc/wolf
+
 echo "=== NVIDIA + Docker Install ==="
 
 read -rp "Install NVIDIA driver automatically? [y/N]: " INSTALL_DRIVER
