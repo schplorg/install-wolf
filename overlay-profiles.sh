@@ -14,7 +14,6 @@ setup_overlays() {
   local targets=("$@")
 
   for target in "${targets[@]}"; do
-    echo 1
     local name
     name=$(echo "$target" | tr '/' '_' | sed 's/^_//')
     local upper="$OVERLAY_BASE/$name/upper"
@@ -24,9 +23,11 @@ setup_overlays() {
     rm -rf "${OVERLAY_BASE:?}/$name"
     mkdir -p "$upper" "$work" "$target"
 
+    echo 1
     mount -t overlay overlay \
       -o lowerdir="$template",upperdir="$upper",workdir="$work" \
       "$target"
+    echo 0
   done
 }
 
