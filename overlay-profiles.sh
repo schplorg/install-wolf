@@ -13,6 +13,7 @@ setup_overlays() {
   local targets=("$@")
 
   for target in "${targets[@]}"; do
+    mkdir -p "$target"
     local name
     name=$(echo "$target" | tr '/' '_' | sed 's/^_//')
     local upper="$OVERLAY_BASE/$name/upper"
