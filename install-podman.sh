@@ -7,3 +7,4 @@ mkdir -p /etc/wolf
 
 apt update
 apt install -y podman
+systemctl start podman.socket
