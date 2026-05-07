@@ -13,8 +13,17 @@ read -rp "Install NVIDIA Container Toolkit? (recommended) [y/N]: " USE_TOOLKIT
 apt update
 
 if [[ "${INSTALL_DRIVER,,}" == "y" ]]; then
-  apt install -y ubuntu-drivers-common
-  ubuntu-drivers autoinstall
+  apt update
+
+  if [[ -n "$NVIDIA_DRIVER_VERSION" ]]; then
+    apt install nvidia-driver-$NVIDIA_DRIVER_VERSION
+  else
+    # Find the highest nvidia-driver-NNN package available
+    LATEST=$(apt-cache search nvidia-driver | \
+      grep -oP 'nvidia-driver-\K[0-9]+' | \
+      sort -n | tail -1)
+    apt install -y "nvidia-driver-$LATEST"
+  fi
 fi
 
 apt install -y ca-certificates curl gnupg lsb-release
