@@ -11,11 +11,8 @@ read -rp "Install NVIDIA driver automatically? [y/N]: " INSTALL_DRIVER
 read -rp "Install NVIDIA Container Toolkit? (recommended) [y/N]: " USE_TOOLKIT
 
 apt update
-apt upgrade -y
 
 if [[ "${INSTALL_DRIVER,,}" == "y" ]]; then
-  apt update
-
   if [[ -n "$NVIDIA_DRIVER_VERSION" ]]; then
     apt install nvidia-driver-$NVIDIA_DRIVER_VERSION
   else
