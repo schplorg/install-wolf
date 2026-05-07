@@ -62,6 +62,9 @@ KERNEL=="uhid", GROUP="input", MODE="0660", TAG+="uaccess"
 EOF
 
 udevadm control --reload-rules && udevadm trigger
-nvidia-container-cli --load-kmods info || true
+
+if [[ "${USE_TOOLKIT,,}" == "y" ]]; then
+  nvidia-container-cli --load-kmods info || true
+fi
 
 echo "NVIDIA + Docker setup complete."
