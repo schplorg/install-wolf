@@ -6,6 +6,7 @@ set -euo pipefail
 mkdir -p /etc/wolf
 
 echo "=== NVIDIA + Docker Install ==="
+echo "make sure you ran apt upgrade"
 
 read -rp "Install NVIDIA driver automatically? [y/N]: " INSTALL_DRIVER
 read -rp "Install NVIDIA Container Toolkit? (recommended) [y/N]: " USE_TOOLKIT
