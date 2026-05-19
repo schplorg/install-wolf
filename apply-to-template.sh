@@ -2,35 +2,28 @@
 set -euo pipefail
 [ "$(id -u)" -ne 0 ] && echo "must be root" && exit 1
 
-source .env
+LUTRIS_SRC="/etc/wolf/lutris1"
+PROFILE_SRC="/etc/wolf/profile-data/user1"
+LUTRIS_DST="/etc/wolf/lutris-template"
+PROFILE_DST="/etc/wolf/profile-data/user-template"
+LUTRIS_TMP="/tmp/lutris-template.$$"
+PROFILE_TMP="/tmp/user-template.$$"
 
-OVERLAY_BASE=/etc/wolf/.overlays
+echo "==> Copying sources to tmp..."
+rsync -avP "$LUTRIS_SRC/" "$LUTRIS_TMP/"
+rsync -avP "$PROFILE_SRC/" "$PROFILE_TMP/"
 
-[ $# -ne 2 ] && echo "Usage: $0 <overlay-target> <template>" && exit 1
+echo "==> Destroying overlayfs for user1 and lutris1..."
+./rm-overlays.sh
 
-TARGET="$1"
-TEMPLATE="$2"
-NAME=$(echo "$TARGET" | tr '/' '_' | sed 's/^_//')
-UPPER="$OVERLAY_BASE/$NAME/upper"
+echo "==> Replacing templates..."
+rm -rf "$LUTRIS_DST"
+mv "$LUTRIS_TMP" "$LUTRIS_DST"
 
-[ ! -d "$UPPER" ] && echo "Error: no upper dir found at $UPPER" && exit 1
-[ ! -d "$TEMPLATE" ] && echo "Error: template dir not found: $TEMPLATE" && exit 1
+rm -rf "$PROFILE_DST"
+mv "$PROFILE_TMP" "$PROFILE_DST"
 
-read -rp "Overwrite $TEMPLATE with $TARGET state? [y/N] " confirm
-[[ "$confirm" != "y" && "$confirm" != "Y" ]] && exit 0
+echo "==> Recreating overlays from new templates..."
+./overlay-profiles.sh
 
-while IFS= read -r -d '' whiteout; do
-  dir=$(dirname "$whiteout")
-  base=$(basename "$whiteout" | sed 's/^\.wh\.//')
-  rel_dir="${dir#"$UPPER"}"
-  target_path=$(echo "$TEMPLATE/${rel_dir}/${base}" | sed 's|//|/|g')
-  [ -e "$target_path" ] || [ -L "$target_path" ] && rm -rf "$target_path"
-done < <(find "$UPPER" -name '.wh.*' ! -name '.wh..wh..opq' -print0)
-
-while IFS= read -r -d '' opaque; do
-  rel_dir="${$(dirname "$opaque")#"$UPPER"}"
-  target_path=$(echo "$TEMPLATE/${rel_dir}" | sed 's|//|/|g')
-  [ -d "$target_path" ] && rm -rf "$target_path" && mkdir -p "$target_path"
-done < <(find "$UPPER" -name '.wh..wh..opq' -print0)
-
-rsync -a --exclude='.wh.*' "$UPPER/" "$TEMPLATE/"
+echo "==> Done."
